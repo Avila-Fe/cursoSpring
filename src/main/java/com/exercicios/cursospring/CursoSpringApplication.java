@@ -1,13 +1,8 @@
 package com.exercicios.cursospring;
 
-import com.exercicios.cursospring.domain.Categoria;
-import com.exercicios.cursospring.domain.Cidade;
-import com.exercicios.cursospring.domain.Estado;
-import com.exercicios.cursospring.domain.Produto;
-import com.exercicios.cursospring.repositories.CategoriaRepository;
-import com.exercicios.cursospring.repositories.CidadeRepository;
-import com.exercicios.cursospring.repositories.EstadoRepository;
-import com.exercicios.cursospring.repositories.ProdutoRepository;
+import com.exercicios.cursospring.domain.*;
+import com.exercicios.cursospring.domain.enums.TipoCliente;
+import com.exercicios.cursospring.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -29,6 +24,12 @@ public class CursoSpringApplication implements CommandLineRunner {
 
     @Autowired
     private CidadeRepository cidRepo;
+
+    @Autowired
+    private ClienteRepository cliRepo;
+
+    @Autowired
+    private EnderecoRepository endRepo;
 
     public static void main(String[] args) {
         SpringApplication.run(CursoSpringApplication.class, args);
@@ -65,5 +66,21 @@ public class CursoSpringApplication implements CommandLineRunner {
 
         estRepo.saveAll(Arrays.asList(est1, est2));
         cidRepo.saveAll(Arrays.asList(c1, c2, c3));
+
+        Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com",
+                "363.789.123-77", TipoCliente.PESSOAFISICA);
+        cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
+
+        Endereco e1 = new Endereco(null, "Rua Flores", "300",
+                "Apto 300", "Jardim", "38220-834", cli1, c1);
+
+        Endereco e2 = new Endereco(null, "Avenida Matos", "105",
+                "Sala 800", "Centro", "38777-012", cli1, c2);
+
+        cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+
+        cliRepo.saveAll(Arrays.asList(cli1));
+        endRepo.saveAll(Arrays.asList(e1, e2));
+
     }
 }
